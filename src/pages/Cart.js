@@ -1,5 +1,5 @@
 import { memo, useState} from 'react'
-import {Table} from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux';
 import { setUser, increase } from '../store/userSlice.js';
 import { addCount, deleteItem } from '../store.js'
@@ -20,7 +20,7 @@ function Cart(){
             <Child></Child>
             <button onClick={()=>{setCount(count+1)}}>+</button>
             <h6>{state.user.id}{state.user.pw}의 장바구니</h6>
-            <button onClick={()=>{dispatch(increase(100))}}>버튼</button>
+            <button onClick={()=>{/*dispatch(increase(100))*/}}>버튼</button>
            <Table>
             <thead>
                 <tr>

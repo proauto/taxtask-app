@@ -1,24 +1,35 @@
 import {createSlice} from '@reduxjs/toolkit'
-
+import { isCompositeComponent } from 'react-dom/test-utils'
 
 let user = createSlice({
     name : 'user',
-    initialState : {id :'kim', pw : 20},
+    initialState : {
+        id: "",
+        pw : ""
+    },
     reducers :{
         setUser(state, action){
-            state.name =  action.payload
-           
+            console.log(action.payload)
+            console.log(action.payload.id)
+            console.log(action.payload.pw)
+            console.log({...state, id :action.payload.id, pw : action.payload.pw})
+            return {...state, id :action.payload.id, pw : action.payload.pw}
         },
-        increase(state, action){
-            state.age += action.payload
-           
-        }
     }
 })
 
+let authenticated = createSlice({
+    name: 'authenticated',
+    initialState : false,
+    reducers:{
+        getAuth(state, action){
+            
+            return action.payload
+        },
+    }
+})
 
+export let { setUser, } = user.actions
+export let { getAuth, } = authenticated.actions
 
-export let { setUser, increase } = user.actions
-
-
-export default user
+export {user, authenticated}

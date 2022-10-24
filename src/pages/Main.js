@@ -1,10 +1,13 @@
 import { useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import { useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 
 function Main(props){
-
+  let dispatch = useDispatch()
   let [shoes,setShoes] = useState(props.shoes)
+  let state = useSelector((state) => state)
+    
 
     return(<>
         <div className="main-bg"></div>

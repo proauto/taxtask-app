@@ -4,6 +4,7 @@ import './App.css';
 import React, { lazy, Suspense, useEffect, useState } from "react";
 import { Button,Navbar,Container,Nav } from 'react-bootstrap';
 import { Routes, Route, Link, useNavigate, Outlet, json, withRouter  } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux';
 import data from './data.js';
 //import Detail from './pages/Detail';
 import Main from './pages/Main';
@@ -11,16 +12,18 @@ import About from './pages/About';
 import Event from './pages/Event';
 import Cart from './pages/Cart';
 import Login from './pages/Login'
+import {request} from './utils/axios'
+import { getAuth } from './store/userSlice.js';
 
 const Detail = lazy(()=>import('./pages/Detail.js'));
 
 function App() {
-  let [user, setUser] = useState(null);
-  let authenticated = user != null;
-
+  let dispatch = useDispatch()
+  let state = useSelector((state) => state)
   let [shoes] = useState(data)
+  dispatch(getAuth(state.user.id != ""))
   
-
+  console.log(state.authenticated)
 
   useEffect(()=>{
     if(localStorage.getItem('watched')==null){
@@ -30,7 +33,7 @@ function App() {
 
   return (
     <div className="App">
-       { authenticated && <Navigation /> }
+       { state.authenticated && <Navigation /> }
       <Suspense fallback={<div>로딩중입니다.</div>}>
       <Routes>
         <Route path="/" element={ <Main shoes={shoes}/>}/>
@@ -47,8 +50,7 @@ function App() {
         </Route> 
         
         <Route path="/cart" element={<Cart/>}/>  
-        <Route path="/login" element={<Login user={user}/>}/>   
-      
+        <Route path="/login" element={<Login/>}/>   
         </Routes>
       </Suspense>
     </div>
@@ -60,13 +62,16 @@ function Navigation(){
   return(
       <Navbar bg="light" variant="light" >
         <Container>
-          <Navbar.Brand href="#home">TaxTask</Navbar.Brand>
+          <Navbar.Brand onClick={()=>navigate('/')}>TaxTask</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link onClick={()=>navigate('/')} >Home</Nav.Link>
-            <Nav.Link onClick={()=>navigate('/about')}>About</Nav.Link>
-            <Nav.Link onClick={()=>navigate('/event')}>Event</Nav.Link>
-            <Nav.Link onClick={()=>navigate('/cart')}>Cart</Nav.Link>
-            <Nav.Link onClick={()=>navigate('/login')}>Login</Nav.Link>
+            <Nav.Link onClick={()=>navigate('/about')}>거래처관리</Nav.Link>
+            <Nav.Link onClick={()=>navigate('/event')}>할일관리</Nav.Link>
+            <Nav.Link onClick={()=>navigate('/cart')}>일정관리</Nav.Link>
+            <Nav.Link onClick={()=>navigate('/login')}>노트</Nav.Link>
+            <Nav.Link onClick={()=>navigate('/about')}>민원서류</Nav.Link>
+            <Nav.Link onClick={()=>navigate('/about')}>매출비용TABLE</Nav.Link>
+            <Nav.Link onClick={()=>navigate('/about')}>공문발송</Nav.Link>
+            <Nav.Link onClick={()=>navigate('/about')}>웹스토리지</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
