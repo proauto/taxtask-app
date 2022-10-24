@@ -3,10 +3,10 @@ import {createSlice} from '@reduxjs/toolkit'
 
 let user = createSlice({
     name : 'user',
-    initialState : {name :'kim', age : 20},
+    initialState : {id :'kim', pw : 20},
     reducers :{
-        setUser(state){
-            state.name = 'park'
+        setUser(state, action){
+            state.name =  action.payload
            
         },
         increase(state, action){

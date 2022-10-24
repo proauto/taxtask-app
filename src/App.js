@@ -15,9 +15,12 @@ import Login from './pages/Login'
 const Detail = lazy(()=>import('./pages/Detail.js'));
 
 function App() {
-  
+  let [user, setUser] = useState(null);
+  let authenticated = user != null;
+
   let [shoes] = useState(data)
-  let navigate = useNavigate()
+  
+
 
   useEffect(()=>{
     if(localStorage.getItem('watched')==null){
@@ -27,20 +30,7 @@ function App() {
 
   return (
     <div className="App">
-       
-      <Navbar bg="light" variant="light" >
-       <Container>
-         <Navbar.Brand href="#home">Navbar</Navbar.Brand>
-         <Nav className="me-auto">
-           <Nav.Link onClick={()=>navigate('/')} >Home</Nav.Link>
-           <Nav.Link onClick={()=>navigate('/about')}>About</Nav.Link>
-           <Nav.Link onClick={()=>navigate('/event')}>Event</Nav.Link>
-           <Nav.Link onClick={()=>navigate('/cart')}>Cart</Nav.Link>
-           <Nav.Link onClick={()=>navigate('/login')}>Login</Nav.Link>
-         </Nav>
-        </Container>
-      </Navbar>
-      
+       { authenticated && <Navigation /> }
       <Suspense fallback={<div>로딩중입니다.</div>}>
       <Routes>
         <Route path="/" element={ <Main shoes={shoes}/>}/>
@@ -57,12 +47,30 @@ function App() {
         </Route> 
         
         <Route path="/cart" element={<Cart/>}/>  
-        <Route path="/login" element={<Login/>}/>   
+        <Route path="/login" element={<Login user={user}/>}/>   
       
         </Routes>
       </Suspense>
     </div>
   );
+}
+
+function Navigation(){
+  let navigate = useNavigate()
+  return(
+      <Navbar bg="light" variant="light" >
+        <Container>
+          <Navbar.Brand href="#home">TaxTask</Navbar.Brand>
+          <Nav className="me-auto">
+            <Nav.Link onClick={()=>navigate('/')} >Home</Nav.Link>
+            <Nav.Link onClick={()=>navigate('/about')}>About</Nav.Link>
+            <Nav.Link onClick={()=>navigate('/event')}>Event</Nav.Link>
+            <Nav.Link onClick={()=>navigate('/cart')}>Cart</Nav.Link>
+            <Nav.Link onClick={()=>navigate('/login')}>Login</Nav.Link>
+          </Nav>
+        </Container>
+      </Navbar>
+  )
 }
 
 
