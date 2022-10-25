@@ -12,6 +12,7 @@ import About from './pages/About';
 import Event from './pages/Event';
 import Cart from './pages/Cart';
 import Login from './pages/Login'
+import Register from './pages/Register'
 import {request} from './utils/axios'
 import { getAuth } from './store/userSlice.js';
 
@@ -23,8 +24,6 @@ function App() {
   let [shoes] = useState(data)
   dispatch(getAuth(state.user.id != ""))
   
-  console.log(state.authenticated)
-
   useEffect(()=>{
     if(localStorage.getItem('watched')==null){
       localStorage.setItem('watched', JSON.stringify([]))
@@ -50,7 +49,8 @@ function App() {
         </Route> 
         
         <Route path="/cart" element={<Cart/>}/>  
-        <Route path="/login" element={<Login/>}/>   
+        <Route path="/login" element={<Login/>}/> 
+        <Route path="/register" element={<Register/>}/> 
         </Routes>
       </Suspense>
     </div>
@@ -72,6 +72,8 @@ function Navigation(){
             <Nav.Link onClick={()=>navigate('/about')}>매출비용TABLE</Nav.Link>
             <Nav.Link onClick={()=>navigate('/about')}>공문발송</Nav.Link>
             <Nav.Link onClick={()=>navigate('/about')}>웹스토리지</Nav.Link>
+            <Nav.Link onClick={()=>navigate('/login')}>로그인</Nav.Link>
+            <Nav.Link onClick={()=>navigate('/register')}>회원가입</Nav.Link>
           </Nav>
         </Container>
       </Navbar>

@@ -5,7 +5,7 @@ import axios from "axios";
 import {request} from '../utils/axios'
 import { setUser, increase, getAuth } from '../store/userSlice.js';
 
-function Login(props){
+function Register(props){
 
     let navigate = useNavigate()
     let state = useSelector((state) => state)
@@ -14,8 +14,7 @@ function Login(props){
     let [err_message, setErrmessage] = useState('')
     const [inputId, setInputId] = useState('')
     const [inputPw, setInputPw] = useState('')
-
-       
+    
     useEffect(() =>{
         let a = setTimeout(()=>{ setAlert(false)  },2000)
         return ()=>{
@@ -32,7 +31,7 @@ function Login(props){
         setInputPw(e.target.value)
     }
 
-    const onClickLogin = (e) =>{
+    const onClickRegister = (e) =>{
         e.preventDefault();
         
         let data = JSON.stringify({
@@ -40,7 +39,7 @@ function Login(props){
             'pw' : inputPw
         })
 
-        axios.post('/login',
+        axios.post('/register',
         data, {
         headers: {
               "Content-Type": `application/json`,
@@ -48,8 +47,6 @@ function Login(props){
             (res) =>{
                 console.log('성공')
                 console.log(res.data)
-                dispatch(setUser(res.data))
-                dispatch(getAuth(true))
                 navigate('/')
             }
         )
@@ -83,12 +80,6 @@ function Login(props){
         })
         
     }
-
-    
-
-    if(state.authenticated==true){
-        return (<div>이미 로그인 중입니다.</div>)
-    }
     return (
         <div>
         <div className="container mt-4"> 
@@ -101,7 +92,7 @@ function Login(props){
                 <label>비번</label> 
                 <input type="password" className="form-control" name="pw" value={inputPw} onChange={handleInputPw}/> 
                 </div> 
-                <button type="submit" className="btn btn-danger"  onClick={onClickLogin}>로그인</button> 
+                <button type="submit" className="btn btn-danger"  onClick={onClickRegister}>회원가입</button> 
             </form> 
             {
                 alert == false
@@ -123,4 +114,4 @@ function Alert(props){
 }
 
 
-export default Login;
+export default Register;

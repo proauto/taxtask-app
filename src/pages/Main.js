@@ -2,14 +2,21 @@ import { useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
+import Login from './Login'
 
 function Main(props){
+  let navigate = useNavigate()
   let dispatch = useDispatch()
   let [shoes,setShoes] = useState(props.shoes)
   let state = useSelector((state) => state)
-    
 
-    return(<>
+  /* // 로그인 안하면 무조건 로그인페이지로 보낸다 >> 개발끝나고 주석 해제
+  if(state.authenticated == false){
+
+    return(<Login/>)   
+  } 
+  */
+  return(<>
         <div className="main-bg"></div>
         <div className="container">
          <div className="row">
@@ -40,12 +47,9 @@ function Main(props){
           Promise.all([axios.get('/url1'),axios.get('/url2')]).then(()=>{
 
           })
-          
-
 
         }}>더보기</button>
         </>
-
     )
 }
 
