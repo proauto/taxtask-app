@@ -24,7 +24,19 @@ function Register(props){
     
     // input data 의 변화가 있을 때마다 value 값을 변경해서 useState 해준다
     const handleInputId = (e) => {
-        setInputId(e.target.value)
+        let value = e.target.value
+        if(value===""){
+            setInputId(value)
+            return;
+        }
+
+        let length = value.length;
+        if(dataRuleCheckForID(value[length - 1]) === false){
+            return;
+        } 
+
+        setInputId(value)
+        return 
     }
  
     const handleInputPw = (e) => {
@@ -33,52 +45,64 @@ function Register(props){
 
     const onClickRegister = (e) =>{
         e.preventDefault();
-        
-        let data = JSON.stringify({
-            'id' : inputId,
-            'pw' : inputPw
-        })
 
-        axios.post('/register',
-        data, {
-        headers: {
-              "Content-Type": `application/json`,
-        },}).then(
-            (res) =>{
-                console.log('성공')
-                console.log(res.data)
-                navigate('/')
-            }
-        )
-        .catch ((error) => {
-            console.log('실패')
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
+        // 비밀번호  8 ~ 10자 영문, 숫자 조합
+        var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,10}$/
+        if(regExp.test(inputPw)){
 
-                if(error.response.data == 'Bad Request'){
-                    setErrmessage('입력해주세요')
-                    setAlert(true)
+            console.log("비밀번호 유효")
+            
+            let data = JSON.stringify({
+                'id' : inputId,
+                'pw' : inputPw
+            })
+
+            axios.post('/register',
+            data, {
+            headers: {
+                "Content-Type": `application/json`,
+            },}).then(
+                (res) =>{
+                    console.log('성공')
+                    console.log(res.data)
+                    navigate('/')
                 }
-                else if(error.response.data == 'Unauthorized'){
-                    setErrmessage('아이디나 비밀번호가 틀렸습니다.')
-                    setAlert(true)
+            )
+            .catch ((error) => {
+                console.log('실패')
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+
+                    if(error.response.data == 'Bad Request'){
+                        setErrmessage('입력해주세요')
+                        setAlert(true)
+                    }
+                    else if(error.response.data == 'Unauthorized'){
+                        setErrmessage('아이디나 비밀번호가 틀렸습니다.')
+                        setAlert(true)
+                    }
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
                 }
-              } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-                console.log(error.request);
-              } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', error.message);
-              }
-              console.log(error.config);
-        })
-        
+                console.log(error.config);
+            })
+        }else{
+            console.log("비밀번호 무효")
+
+            setErrmessage('비밀번호는 8~10자 영문, 숫자 조합으로')
+            setAlert(true)
+
+        }     
     }
     return (
         <div>
@@ -86,11 +110,11 @@ function Register(props){
             <form> 
                 <div className="form-group"> 
                 <label>아이디</label> 
-                <input type="text" className="form-control" name="id" value={inputId} onChange={handleInputId}/> 
+                <input type="text" className="form-control" name="id" value={inputId} onChange={handleInputId}  maxlength="15"/> 
                 </div> 
                 <div className="form-group"> 
                 <label>비번</label> 
-                <input type="password" className="form-control" name="pw" value={inputPw} onChange={handleInputPw}/> 
+                <input type="password" className="form-control" name="pw" value={inputPw} onChange={handleInputPw}  maxlength="15"/> 
                 </div> 
                 <button type="submit" className="btn btn-danger"  onClick={onClickRegister}>회원가입</button> 
             </form> 
@@ -113,5 +137,14 @@ function Alert(props){
     )
 }
 
+const dataRuleCheckForID = (ch) => {
+    let ascii = ch.charCodeAt(0);
+    if (48 /* 0 */ <= ascii && ascii <= 57 /* 9 */) return true;
+    if (65 /* A */ <= ascii && ascii <= 90 /* Z */) return true;
+    if (97 /* a */ <= ascii && ascii <= 122 /* z */) return true;
+    if (ch === ".") return true;
+  
+    return false;
+  };
 
 export default Register;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import { Routes, Route, Link, useNavigate, Outlet, json, withRouter  } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, ReactReduxContext } from 'react-redux';
 import axios from "axios";
 import {request} from '../utils/axios'
 import { setUser, increase, getAuth } from '../store/userSlice.js';
@@ -25,7 +25,19 @@ function Login(props){
     
     // input data 의 변화가 있을 때마다 value 값을 변경해서 useState 해준다
     const handleInputId = (e) => {
-        setInputId(e.target.value)
+        let value = e.target.value
+        if(value===""){
+            setInputId(value)
+            return;
+        }
+
+        let length = value.length;
+        if(dataRuleCheckForID(value[length - 1]) === false){
+            return;
+        } 
+
+        setInputId(value)
+        return 
     }
  
     const handleInputPw = (e) => {
@@ -39,7 +51,6 @@ function Login(props){
             'id' : inputId,
             'pw' : inputPw
         })
-
         axios.post('/login',
         data, {
         headers: {
@@ -95,11 +106,11 @@ function Login(props){
             <form> 
                 <div className="form-group"> 
                 <label>아이디</label> 
-                <input type="text" className="form-control" name="id" value={inputId} onChange={handleInputId}/> 
+                <input type="text" className="form-control" name="id" value={inputId} onChange={handleInputId} maxlength="15"/> 
                 </div> 
                 <div className="form-group"> 
                 <label>비번</label> 
-                <input type="password" className="form-control" name="pw" value={inputPw} onChange={handleInputPw}/> 
+                <input type="password" className="form-control" name="pw" value={inputPw} onChange={handleInputPw} maxlength="15"/> 
                 </div> 
                 <button type="submit" className="btn btn-danger"  onClick={onClickLogin}>로그인</button> 
             </form> 
@@ -113,7 +124,6 @@ function Login(props){
     )
 }
 
-
 function Alert(props){
     return(
       <div className="alert alert-warning">
@@ -122,5 +132,14 @@ function Alert(props){
     )
 }
 
+const dataRuleCheckForID = (ch) => {
+    let ascii = ch.charCodeAt(0);
+    if (48 /* 0 */ <= ascii && ascii <= 57 /* 9 */) return true;
+    if (65 /* A */ <= ascii && ascii <= 90 /* Z */) return true;
+    if (97 /* a */ <= ascii && ascii <= 122 /* z */) return true;
+    if (ch === ".") return true;
+  
+    return false;
+  };
 
 export default Login;

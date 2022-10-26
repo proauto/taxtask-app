@@ -63,6 +63,9 @@ function Navigation(){
       <Navbar bg="light" variant="light" >
         <Container>
           <Navbar.Brand onClick={()=>navigate('/')}>TaxTask</Navbar.Brand>
+
+
+          
           <Nav className="me-auto">
             <Nav.Link onClick={()=>navigate('/about')}>거래처관리</Nav.Link>
             <Nav.Link onClick={()=>navigate('/event')}>할일관리</Nav.Link>
