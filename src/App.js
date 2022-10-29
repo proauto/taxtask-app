@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import data from './data.js';
 //import Detail from './pages/Detail';
 import Main from './pages/Main';
-import Companys from './pages/Companys';
+import Accounts from './pages/Accounts';
 import Event from './pages/Event';
 import Cart from './pages/Cart';
 import Login from './pages/Login'
@@ -38,7 +38,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Main shoes={shoes} />} />
           <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
-          <Route path="/companys" element={<Companys />}>
+          <Route path="/accounts" element={<Accounts />}>
             <Route path="member" element={<div>멤버임</div>} />
             <Route path="location" element={<div>위치정보임</div>} />
           </Route>
@@ -68,7 +68,7 @@ function Topnav() {
         <Navbar.Brand onClick={() => navigate('/')}>TaxTask</Navbar.Brand>
 
         <Nav className="me-auto">
-          <Nav.Link onClick={() => navigate('/companys')}>거래처관리</Nav.Link>
+          <Nav.Link onClick={() => navigate('/accounts')}>거래처관리</Nav.Link>
           <Nav.Link onClick={() => navigate('/event')}>할일관리</Nav.Link>
           <Nav.Link onClick={() => navigate('/cart')}>일정관리</Nav.Link>
           <Nav.Link onClick={() => navigate('/login')}>노트</Nav.Link>
