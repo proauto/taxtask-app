@@ -9,6 +9,7 @@ import { ch2pattern, createFuzzyMatcher } from '../utils/ch2pattern'
 function Accounts() {
 
     //accounts : 거래처리스트, serachInput : 거래처검색 pick : 선택한 거래처
+    
     let state = useSelector((state) => state)
     let initialnewaccount = {
         id: 0,
@@ -32,21 +33,22 @@ function Accounts() {
     let [editswitch, setEditswitch] = useState(true)
     let navigate = useNavigate()
 
-
-
     //거래처 추가 버튼
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = (e) => {
 
+        console.log(editswitch)
+        console.log(pick.name)
         let caseName = e.target.id
         console.log(e.target.id)
-        if(caseName == 'edit'){
+        if (caseName == 'edit') {
             setEditswitch(false)
-        }else if(caseName == 'plus'){
+        } else if (caseName == 'plus') {
             setEditswitch(true)
         }
-        setShow(true)};
+        setShow(true)
+    };
 
     const handleInputData = (e) => {
 
@@ -148,6 +150,7 @@ function Accounts() {
                 params: { 'manager': '이홍규' }
             }
         ).then((결과) => {
+            console.log(결과.data)
             setAccounts(결과.data)
             setInitialNames(결과.data.map(row => row.name))
             setNames(결과.data.map(row => row.name))
@@ -180,7 +183,7 @@ function Accounts() {
     //개별 거래처 클릭
     const clickAccount = (params, e) => {
         e.preventDefault();
-        
+
         setPick(accounts.find((element) => {
             if (element.name === params) {
                 return true;
@@ -193,12 +196,13 @@ function Accounts() {
 
     //거래처 수정 클릭
     const clickEditAccount = (e) => {
-        console.log()
+        console.log(e)
 
+        navigate('/accountsedit')
 
-        axios.put('/account', {
-            params :{
-                _id : pick._id
+        /* axios.put('/account', {
+            params: {
+                _id: pick._id
             },
             firstName: 'Fred',
             lastName: 'Flintstone'
@@ -208,24 +212,20 @@ function Accounts() {
             })
             .catch(function (error) {
                 console.log(error);
-            });
+            }); */
 
     }
 
-
-
-
     return (
         <div class="container-fluid">
-
-
+            
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>거래처 추가</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group className="mb-3" controlId="nameForm" onChange={handleInputData} defaultValue={ editswitch ? "" : pick.name}>
+                        <Form.Group className="mb-3" controlId="nameForm" onChange={handleInputData}>
                             <Form.Label>이름</Form.Label>
                             <Form.Control
                                 type="text"
@@ -236,14 +236,12 @@ function Accounts() {
                             <Form.Label>사업자등록번호</Form.Label>
                             <Form.Control
                                 type="text"
-                                autoFocus
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="phoneForm" onChange={handleInputData}>
                             <Form.Label>전화번호</Form.Label>
                             <Form.Control
                                 type="text"
-                                autoFocus
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" onChange={handleInputData}>
@@ -257,21 +255,18 @@ function Accounts() {
                             <Form.Label>업태</Form.Label>
                             <Form.Control
                                 type="text"
-                                autoFocus
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="ceoForm" onChange={handleInputData}>
                             <Form.Label>대표자</Form.Label>
                             <Form.Control
                                 type="text"
-                                autoFocus
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="categoryForm" onChange={handleInputData}>
                             <Form.Label>과세유형</Form.Label>
                             <Form.Control
                                 type="text"
-                                autoFocus
                             />
                         </Form.Group>
                         <Form.Group
@@ -285,10 +280,10 @@ function Accounts() {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
-                        Close
+                        닫기
                     </Button>
                     <Button variant="primary" onClick={handleOk}>
-                        Save Changes
+                        저장
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -327,7 +322,7 @@ function Accounts() {
                 <div class="col-md-9 mt-4">
                     <div class="container">
                         <h4 class="col-md-12">{pick.name}</h4>
-                        <Button variant="primary" id='edit' class="col-md-12 float-left mt-5" onClick={handleShow}>수정</Button>
+                        <Button variant="primary" id='edit' class="col-md-12 float-left mt-5" onClick={clickEditAccount}>수정</Button>
 
                         <div class="container mt-5">
                             <h4 class="col-md-12">기본정보</h4>

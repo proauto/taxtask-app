@@ -9,7 +9,8 @@ import data from './data.js';
 //import Detail from './pages/Detail';
 import Main from './pages/Main';
 import Accounts from './pages/Accounts';
-import Event from './pages/Event';
+import Accountsedit from './pages/Accountsedit';
+import Todo from './pages/Todo';
 import Cart from './pages/Cart';
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -38,13 +39,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Main shoes={shoes} />} />
           <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
-          <Route path="/accounts" element={<Accounts />}>
-            <Route path="member" element={<div>멤버임</div>} />
-            <Route path="location" element={<div>위치정보임</div>} />
-          </Route>
+          <Route path="/accounts" element={<Accounts />}/>
+          <Route path="/accountsedit" element={<Accountsedit />}></Route>
+            
           <Route path="*" element={<div>없는 페이지에요</div>} />
 
-          <Route path="/event" element={<Event />}>
+          <Route path="/todo" element={<Todo />}>
             <Route path="one" element={<div>첫 주문시 양배추즙 서비스</div>} />
             <Route path="two" element={<div>생일기념 쿠폰받기</div>} />
           </Route>
@@ -69,7 +69,7 @@ function Topnav() {
 
         <Nav className="me-auto">
           <Nav.Link onClick={() => navigate('/accounts')}>거래처관리</Nav.Link>
-          <Nav.Link onClick={() => navigate('/event')}>할일관리</Nav.Link>
+          <Nav.Link onClick={() => navigate('/todo')}>할일관리</Nav.Link>
           <Nav.Link onClick={() => navigate('/cart')}>일정관리</Nav.Link>
           <Nav.Link onClick={() => navigate('/login')}>노트</Nav.Link>
           <Nav.Link onClick={() => navigate('/about')}>민원서류</Nav.Link>
